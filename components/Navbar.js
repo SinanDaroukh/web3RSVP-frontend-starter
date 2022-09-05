@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navmenu from "./Navmenu";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount, useDisconnect } from "wagmi";
 
 export default function Navbar() {
+  const { data: account } = useAccount();
+  const { disconnect } = useDisconnect();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -20,7 +24,7 @@ export default function Navbar() {
             <div className="flex items-center">
               <Link href="/">
                 <a>web3rsvp</a>
-              </Link>
+              </Link>  
             </div>
             <div className="ml-10 space-x-4 flex items-center">
               <Link href="/create-event">
@@ -28,6 +32,7 @@ export default function Navbar() {
                   Create Event
                 </a>
               </Link>
+              {account ? (<Navmenu account={account} disconnect={() => disconnect()} />) : (<ConnectButton />)}
             </div>
           </div>
         </nav>
